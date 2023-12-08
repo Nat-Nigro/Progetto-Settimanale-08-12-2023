@@ -1,0 +1,26 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+
+body {
+    background-color: grey;
+}
+
+.navTitle {
+    font-family: 'Silkscreen', sans-serif;
+    color: wheat;
+}
+
+h5 {
+    background-color: grey;
+    border-radius: 50px;
+}
+
+.zoom {
+    transition: trasform .2s;
+}
+.zoom:hover {
+    transform: scale(1.3);
+    border-radius: 50px;
+    z-index: 19999;
+}
+
