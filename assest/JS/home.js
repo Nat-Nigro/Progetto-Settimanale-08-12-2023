@@ -14,6 +14,7 @@ fetch(url, { headers: { Authorization: token } })
 
         console.log(arrResponseObj)
         arrResponseObj.forEach(product => {
+            
             const newContainer = document.createElement("div");
             newContainer.innerHTML = `
     <div class="card border border-dark h-100">
@@ -21,13 +22,15 @@ fetch(url, { headers: { Authorization: token } })
         <div class="card-body"> 
             <h5 class="card-title text-center">${product.name}</h5>
             <hr>
-            <div class="d-flex justify-content-between align-items-center">
-                <a href="details.html" class="btn btn-primary">Scopri di più</a>
-                <button class="btn btn-warning" onclick="handleEdit()">Modifica</button>
+            <div>
+                <a href="./details.html?specificId=${product._id}" class="btn btn-primary">Scopri di più</a>
+                <hr>
+                <a class="btn btn-warning" href="./backoffice.html?specificId=${product._id}">Modifica</a>
             </div>
         </div>
     </div>`
 
+        
         item.appendChild(newContainer);
         });
     })
