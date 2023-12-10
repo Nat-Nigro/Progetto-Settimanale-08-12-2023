@@ -40,7 +40,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("brand").value = brand
             })
     } else {
-        subtitle.innerText = "-Crea Item";
+        subtitle.innerText = "- Crea Item";
     }
 })
 
@@ -55,20 +55,65 @@ const handleSumbit = (event) => {
         imageUrl: document.getElementById("imageUrl").value,
         brand: document.getElementById("brand").value
     }
+
+
+    fetch(url, {
+        method: method,
+        body: JSON.stringify(newItem),
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: token
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+
+                if (response.status === 404) throw new Error("Errore, risorsa non trovata")
+                if (response.status >= 400 && response.status < 500) throw new Error("Errore lato Client")
+                if (response.status >= 500 && response.status < 600) throw new Error("Errore lato Server")
+                if (!response.ok) throw new Error("Errore nel reperimento dei dati")
+                return response.json()
+            }
+            console.log(response)
+        })
+        .then(createdItem => {
+
+            if (specificId) {
+                showAlert("Item con id: " + createdItem._id + " modificato corettamente.")
+            } else {
+                showAlert("Item con id: " + createdItem._id + " creato con successo")
+                form.reset()
+            }
+        })
 }
 
-fetch(url, {
-    method: method,
-    body: JSON.stringify(newItem),
-    headers: {
-        "Content-Type": "application/json",
-        Authorization: token
+const showAlert = (message, color = "success") => {
+    const box = document.getElementById("alert-box")
+    box.innerHTML = `<div class="alert alert-${color}" role="alert">${message}</div>`
+
+    setTimeout(() => {
+        alertBox.innerHTML = ""
+    }, 3500)
+}
+
+const deleteItem = () => {
+    const hasConfirmed = confirm("Sei sicuro di voler eliminare questo item?")
+    if (hasConfirmed) {
+        fetch(url, {
+            method: "DELETE",
+            headers: {
+                Authorization: token
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json()
+            }
+        })
+        .then(deletedItem => {
+            showAlert ("Hai eliminato questo l'item " + deletedItem.name + "!")
+            setTimeout(() => { window.location.assign("index.html") }, 2000)
+        })
     }
-})
-.then(response => {
-    if (response.ok) {
-        return response.json()
-    }
-})
-.then()
+}
 
