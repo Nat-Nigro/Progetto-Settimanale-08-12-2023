@@ -39,9 +39,11 @@ window.addEventListener("DOMContentLoaded", () => {
                 document.getElementById("imageUrl").value = imageUrl
                 document.getElementById("brand").value = brand
             })
+            .finally()
     } else {
-        subtitle.innerText = "- Crea Item";
+        subtitle.innerText = "- Crea Item"
     }
+    
 })
 
 const handleSumbit = (event) => {
@@ -78,13 +80,15 @@ const handleSumbit = (event) => {
         })
         .then(createdItem => {
 
-            if (specificId) {
-                showAlert("Item con id: " + createdItem._id + " modificato corettamente.")
+            if (id) {
+                showAlert("Item con id: " + createdItem._id + " modificato correttamente.")
             } else {
                 showAlert("Item con id: " + createdItem._id + " creato con successo")
                 form.reset()
             }
         })
+        .catch(error => console.log(error))
+
 }
 
 const showAlert = (message, color = "success") => {
@@ -112,7 +116,7 @@ const deleteItem = () => {
         })
         .then(deletedItem => {
             showAlert ("Hai eliminato questo l'item " + deletedItem.name + "!")
-            setTimeout(() => { window.location.assign("index.html") }, 2000)
+            setTimeout(() => { window.location.assign("./index.html") }, 2000)
         })
     }
 }
